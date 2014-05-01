@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import android.content.IntentSender.SendIntentException;
-
 import de.yadrone.base.command.CommandManager;
 import de.yadrone.base.command.VideoChannel;
 import de.yadrone.base.configuration.ConfigurationManager;

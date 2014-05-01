@@ -13,8 +13,7 @@ public class SixApplication extends Application {
 	private IARDrone drone;
 
 	public void onCreate() {
-		drone = new ARDrone("192.168.1.1"); // null because of missing
-											// video support on Android
+		drone = new ARDrone("192.168.1.1");
 	}
 
 	public IARDrone getARDrone() {

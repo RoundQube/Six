@@ -17,7 +17,9 @@ import de.yadrone.base.command.DetectionType;
 import de.yadrone.base.command.VisionTagType;
 import de.yadrone.base.navdata.AttitudeListener;
 import de.yadrone.base.navdata.BatteryListener;
-import de.yadrone.base.navdata.CadType;
+import de.yadrone.base.navdata.ControlState;
+import de.yadrone.base.navdata.DroneState;
+import de.yadrone.base.navdata.StateListener;
 import de.yadrone.base.navdata.TrackerData;
 import de.yadrone.base.navdata.VisionData;
 import de.yadrone.base.navdata.VisionListener;
@@ -29,6 +31,8 @@ public class SixActivity extends Activity {
 	private IARDrone drone = null;
 	private Card mCard;
 	private GestureDetector mGestureDetector;
+	private static boolean isEmergency = false;
+	private static boolean isFlying = false;
 
 	/*
 	 * (non-Javadoc)
@@ -54,13 +58,10 @@ public class SixActivity extends Activity {
 
 		try {
 			drone.start();
-			VisionTagType[] types = { VisionTagType.ORIENTED_ROUNDEL };
+			VisionTagType[] types = { VisionTagType.ORIENTED_ROUNDEL,
+					VisionTagType.BLACK_ROUNDEL, VisionTagType.ROUNDEL };
 			drone.getCommandManager().setDetectionType(
 					DetectionType.HORIZONTAL, types);
-			drone.getCommandManager().setDetectionType(
-					CadType.MULTIPLE_DETECTION_MODE);
-			drone.getCommandManager().setDetectionType(
-					CadType.ORIENTED_COCARDE_BW);
 			mCard.setFootnote("Initialized drone");
 			setContentView(mCard.getView());
 		} catch (Exception exc) {
@@ -80,6 +81,23 @@ public class SixActivity extends Activity {
 			@Override
 			public boolean onGesture(Gesture gesture) {
 				if (gesture == Gesture.LONG_PRESS) {
+
+					drone.getNavDataManager().addStateListener(
+							new StateListener() {
+
+								@Override
+								public void stateChanged(DroneState state) {
+									// Log.v(Constants.TAG, "State: " + state);
+									isEmergency = state.isEmergency();
+									isFlying = state.isFlying();
+								}
+
+								@Override
+								public void controlStateChanged(
+										ControlState state) {
+								}
+
+							});
 
 					drone.getNavDataManager().addAttitudeListener(
 							new AttitudeListener() {
@@ -191,6 +209,20 @@ public class SixActivity extends Activity {
 
 							});
 					return true;
+				} else if (gesture == Gesture.TAP) {
+
+					// just ensure we never reset emergency flag when the drone
+					// is in the air
+					if (isEmergency && !isFlying) {
+						drone.reset();
+					}
+
+					Log.v(Constants.TAG,
+							"mock takeoff when emergency state is: "
+									+ isEmergency);
+					// drone.takeOff();
+				} else if (gesture == Gesture.TWO_TAP) {
+					drone.landing();
 				}
 				return false;
 			}
