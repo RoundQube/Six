@@ -97,26 +97,6 @@ public class SixActivity extends Activity {
 
 							});
 
-					drone.getNavDataManager().addAttitudeListener(
-							new AttitudeListener() {
-
-								@Override
-								public void attitudeUpdated(float pitch,
-										float roll, float yaw) {
-								}
-
-								@Override
-								public void attitudeUpdated(float pitch,
-										float roll) {
-								}
-
-								@Override
-								public void windCompensation(float pitch,
-										float roll) {
-								}
-
-							});
-
 					drone.getNavDataManager().addVisionListener(
 							new VisionListener() {
 
