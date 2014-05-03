@@ -193,9 +193,6 @@ public class SixActivity extends Activity {
 						drone.reset();
 					}
 
-					Log.v(Constants.TAG,
-							"mock takeoff when emergency state is: "
-									+ isEmergency);
 					drone.takeOff();
 				} else if (gesture == Gesture.TWO_TAP) {
 					drone.landing();
