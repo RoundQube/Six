@@ -58,8 +58,7 @@ public class SixActivity extends Activity {
 
 		try {
 			drone.start();
-			VisionTagType[] types = { VisionTagType.ORIENTED_ROUNDEL,
-					VisionTagType.BLACK_ROUNDEL, VisionTagType.ROUNDEL };
+			VisionTagType[] types = { VisionTagType.ORIENTED_ROUNDEL };
 			drone.getCommandManager().setDetectionType(
 					DetectionType.HORIZONTAL, types);
 			mCard.setFootnote("Initialized drone");
@@ -87,7 +86,6 @@ public class SixActivity extends Activity {
 
 								@Override
 								public void stateChanged(DroneState state) {
-									// Log.v(Constants.TAG, "State: " + state);
 									isEmergency = state.isEmergency();
 									isFlying = state.isFlying();
 								}
@@ -105,23 +103,16 @@ public class SixActivity extends Activity {
 								@Override
 								public void attitudeUpdated(float pitch,
 										float roll, float yaw) {
-									// Log.v(Constants.TAG, pitch + " " + roll
-									// + " " + yaw);
-
 								}
 
 								@Override
 								public void attitudeUpdated(float pitch,
 										float roll) {
-									// Log.v(Constants.TAG, pitch + " " + roll);
-
 								}
 
 								@Override
 								public void windCompensation(float pitch,
 										float roll) {
-									// TODO Auto-generated method stub
-
 								}
 
 							});
@@ -141,42 +132,29 @@ public class SixActivity extends Activity {
 								@Override
 								public void trackersSend(
 										TrackerData trackersData) {
-									// TODO Auto-generated method stub
-
 								}
 
 								@Override
 								public void receivedPerformanceData(
 										VisionPerformance d) {
-									// TODO Auto-generated method stub
-
 								}
 
 								@Override
 								public void receivedRawData(float[] vision_raw) {
-									// TODO Auto-generated method stub
-
 								}
 
 								@Override
 								public void receivedData(VisionData d) {
-									// Log.v(Constants.TAG,
-									// "State: " + d.getVisionState());
-
 								}
 
 								@Override
 								public void receivedVisionOf(float[] of_dx,
 										float[] of_dy) {
-									// TODO Auto-generated method stub
-
 								}
 
 								@Override
 								public void typeDetected(
 										int detection_camera_type) {
-									// Log.v(Constants.TAG, "Camera Type: "
-									// + detection_camera_type);
 								}
 
 							});
@@ -203,8 +181,6 @@ public class SixActivity extends Activity {
 
 								@Override
 								public void voltageChanged(int vbat_raw) {
-									// TODO Auto-generated method stub
-
 								}
 
 							});
@@ -220,7 +196,7 @@ public class SixActivity extends Activity {
 					Log.v(Constants.TAG,
 							"mock takeoff when emergency state is: "
 									+ isEmergency);
-					// drone.takeOff();
+					drone.takeOff();
 				} else if (gesture == Gesture.TWO_TAP) {
 					drone.landing();
 				}
